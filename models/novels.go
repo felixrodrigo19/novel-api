@@ -1,14 +1,17 @@
 package models
 
 type Genre struct {
+	Id   int    `json:"genre-id"`
 	Name string `json:"genre-name"`
 }
 
 type Author struct {
-	Name string `json:"authon-name"`
+	Id   int    `json:"author-id"`
+	Name string `json:"author-name"`
 }
 
 type Novel struct {
+	Id          int    `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Language    string `json:"language"`
