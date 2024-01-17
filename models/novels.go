@@ -16,7 +16,9 @@ type Novel struct {
 	Description string `json:"description"`
 	Language    string `json:"language"`
 	Type        string `json:"type"`
-	Genre       `json:"novel-genre"`
-	Author      `json:"novel-author"`
+	Genre       `json:"genre"`
+	Author      `json:"author"`
 	Year        int64 `json:"year"`
 }
+
+var Novels []Novel
