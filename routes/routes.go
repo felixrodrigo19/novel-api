@@ -12,6 +12,7 @@ func HandlerRequest() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", controllers.Home)
 	r.HandleFunc("/novel", controllers.AllNovels)
+	r.HandleFunc("/novel/{id}", controllers.Novel)
 
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
