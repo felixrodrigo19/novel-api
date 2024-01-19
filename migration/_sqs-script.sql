@@ -1,8 +1,12 @@
--- Database System: PostgreSQL
--- Database Name: Novels-API
-create table genres(id serial primary key, name varchar);
+create table genres(
+    id serial primary key,
+    name varchar
+);
 
-create table authors(id serial primary key, name varchar);
+create table authors(
+    id serial primary key,
+    name varchar
+);
 
 create table novels(
     id serial primary key,
