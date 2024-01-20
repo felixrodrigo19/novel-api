@@ -31,3 +31,42 @@ func Novel(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func CreateNewNovel(w http.ResponseWriter, r *http.Request) {
+	var novel models.Novel
+
+	err := json.NewDecoder(r.Body).Decode(&novel)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Fprintf(w, "Person: %+v", novel)
+}
+
+func AllAuthors(w http.ResponseWriter, r *http.Request) {
+	var authors []models.Author
+	database.DB.Find(&authors)
+	json.NewEncoder(w).Encode(authors)
+}
+
+func Author(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	for _, author := range models.Authors {
+		if strconv.Itoa(author.Id) == id {
+			json.NewEncoder(w).Encode(author)
+		}
+	}
+}
+
+func CreateNewAuthor(w http.ResponseWriter, r *http.Request) {
+	var author models.Author
+	err := json.NewDecoder(r.Body).Decode(&author)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	database.DB.Create(&author)
+
+}
