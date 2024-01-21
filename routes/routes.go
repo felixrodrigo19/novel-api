@@ -19,5 +19,10 @@ func HandlerRequest() {
 	r.HandleFunc("/author", controllers.AllAuthors).Methods("GET")
 	r.HandleFunc("/author/{id}", controllers.Author).Methods("GET")
 	r.HandleFunc("/author", controllers.CreateNewAuthor).Methods("POST")
+
+	r.HandleFunc("/genre", controllers.AllGenres).Methods("GET")
+	r.HandleFunc("/genre/{id}", controllers.Genre).Methods("GET")
+	r.HandleFunc("/genre", controllers.CreateNewGenre).Methods("POST")
+
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
