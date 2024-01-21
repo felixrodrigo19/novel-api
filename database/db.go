@@ -15,13 +15,13 @@ var (
 
 func DBConection() {
 	dsn := "host=localhost user=postgres password=12345 dbname=Novels-API port=5432 sslmode=disable"
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 
 	if err != nil {
 		log.Panic("DB connection error")
 	}
 
-	DB.AutoMigrate(&models.Author{})
-	DB.AutoMigrate(&models.Genre{})
-	DB.AutoMigrate(&models.Novel{})
+	DB.AutoMigrate(&models.Author{}, &models.Genre{}, &models.Novel{})
 }
