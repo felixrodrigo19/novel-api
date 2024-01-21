@@ -4,26 +4,26 @@ import "gorm.io/gorm"
 
 type Novel struct {
 	gorm.Model
-	Id          int      `gorm:"primaryKey,autoIncrement" json:"id"`
-	Title       string   `gorm:"unique,not null" json:"title"`
-	Description string   `gorm:"not null" json:"description"`
-	Language    string   `gorm:"not null" json:"language"`
-	Type        string   `gorm:"not null" json:"type"`
-	Genres      []Genre  `gorm:"many2many:novel_genres" json:"genres"`
-	Authors     []Author `gorm:"many2many:novel_authors" json:"authors"`
-	Year        int      `gorm:"not null" json:"year"`
+	Id          int      `gorm:"primaryKey,autoIncrement"`
+	Title       string   `gorm:"unique,not null"`
+	Description string   `gorm:"not null"`
+	Language    string   `gorm:"not null"`
+	Type        string   `gorm:"not null"`
+	Genres      []Genre  `gorm:"many2many:novel_genres"`
+	Authors     []Author `gorm:"many2many:novel_authors"`
+	Year        int      `gorm:"not null"`
 }
 
 type Genre struct {
 	gorm.Model
-	Id     int     `gorm:"primaryKey,autoIncrement" json:"genre-id"`
-	Name   string  `gorm:"unique,not null" json:"name"`
-	Novels []Novel `gorm:"many2many:novel_genres" json:"novels"`
+	Id     int     `gorm:"primaryKey,autoIncrement"`
+	Name   string  `gorm:"unique,not null"`
+	Novels []Novel `gorm:"many2many:novel_genres"`
 }
 
 type Author struct {
 	gorm.Model
-	Id     int     `gorm:"primaryKey,autoIncrement" json:"author-id"`
-	Name   string  `gorm:"unique,not null" json:"name"`
-	Novels []Novel `gorm:"many2many:novel_authors" json:"novels"`
+	Id     int     `gorm:"primaryKey,autoIncrement"`
+	Name   string  `gorm:"unique,not null"`
+	Novels []Novel `gorm:"many2many:novel_authors"`
 }
