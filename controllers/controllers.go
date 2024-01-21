@@ -25,11 +25,20 @@ func Novel(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	for _, novel := range models.Novels {
-		if strconv.Itoa(novel.Id) == id {
-			json.NewEncoder(w).Encode(novel)
-		}
+	novelID, err := strconv.Atoi(id)
+
+	if err != nil {
+		http.Error(w, "Invalid novel ID", http.StatusBadRequest)
+		return
 	}
+
+	var novel *models.Novel
+	result := database.DB.First(&novel, novelID)
+	if result.Error != nil {
+		http.Error(w, "Error fetching novel", http.StatusInternalServerError)
+		return
+	}
+	json.NewEncoder(w).Encode(&novel)
 }
 
 func CreateNewNovel(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +49,7 @@ func CreateNewNovel(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Fprintf(w, "Person: %+v", novel)
+
 }
 
 func AllAuthors(w http.ResponseWriter, r *http.Request) {
@@ -53,11 +62,20 @@ func Author(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	for _, author := range models.Authors {
-		if strconv.Itoa(author.Id) == id {
-			json.NewEncoder(w).Encode(author)
-		}
+	authorID, err := strconv.Atoi(id)
+
+	if err != nil {
+		http.Error(w, "Invalid author ID", http.StatusBadRequest)
+		return
 	}
+
+	var author *models.Author
+	result := database.DB.First(&author, authorID)
+	if result.Error != nil {
+		http.Error(w, "Error fetching author", http.StatusInternalServerError)
+		return
+	}
+	json.NewEncoder(w).Encode(&author)
 }
 
 func CreateNewAuthor(w http.ResponseWriter, r *http.Request) {
@@ -68,5 +86,4 @@ func CreateNewAuthor(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	database.DB.Create(&author)
-
 }
