@@ -49,7 +49,7 @@ func CreateNewNovel(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
+	database.DB.Create(&novel)
 }
 
 func AllAuthors(w http.ResponseWriter, r *http.Request) {
@@ -86,4 +86,38 @@ func CreateNewAuthor(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	database.DB.Create(&author)
+}
+
+func AllGenres(w http.ResponseWriter, r *http.Request) {
+	var genres []models.Genre
+	database.DB.Find(&genres)
+	json.NewEncoder(w).Encode(genres)
+}
+
+func Genre(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	genreID, err := strconv.Atoi(id)
+	if err != nil {
+		http.Error(w, "Invalid genre ID", http.StatusBadRequest)
+		return
+	}
+	var genre *models.Genre
+	result := database.DB.First(&genre, genreID)
+	if result.Error != nil {
+		http.Error(w, "Error fetching genre", http.StatusInternalServerError)
+		return
+	}
+	json.NewEncoder(w).Encode(genre)
+}
+
+func CreateNewGenre(w http.ResponseWriter, r *http.Request) {
+	var genre *models.Genre
+	err := json.NewDecoder(r.Body).Decode(&genre)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	database.DB.Create(&genre)
 }
