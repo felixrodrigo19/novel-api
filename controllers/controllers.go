@@ -42,14 +42,17 @@ func Novel(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateNewNovel(w http.ResponseWriter, r *http.Request) {
-	var novel models.Novel
+	var novel *models.Novel
 
 	err := json.NewDecoder(r.Body).Decode(&novel)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	//authorsId := novel.Authors
+
 	database.DB.Create(&novel)
+	json.NewEncoder(w).Encode(novel)
 }
 
 func AllAuthors(w http.ResponseWriter, r *http.Request) {
@@ -79,13 +82,14 @@ func Author(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateNewAuthor(w http.ResponseWriter, r *http.Request) {
-	var author models.Author
+	var author *models.Author
 	err := json.NewDecoder(r.Body).Decode(&author)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	database.DB.Create(&author)
+	json.NewEncoder(w).Encode(author)
 }
 
 func AllGenres(w http.ResponseWriter, r *http.Request) {
@@ -120,4 +124,5 @@ func CreateNewGenre(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	database.DB.Create(&genre)
+	json.NewEncoder(w).Encode(genre)
 }
