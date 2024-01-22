@@ -49,8 +49,6 @@ func CreateNewNovel(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	//authorsId := novel.Authors
-
 	database.DB.Create(&novel)
 	json.NewEncoder(w).Encode(novel)
 }
