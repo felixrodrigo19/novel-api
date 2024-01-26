@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -9,6 +10,7 @@ import (
 	"github.com/felixrodrigo19/rest-api-go/database"
 	"github.com/felixrodrigo19/rest-api-go/models"
 	"github.com/gorilla/mux"
+	"gorm.io/gorm"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +51,39 @@ func CreateNewNovel(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	for i, author := range novel.Authors {
+		var authorFounded models.Author
+
+		result := database.DB.First(&authorFounded, author.Id)
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			http.Error(w, "Record Not Found", http.StatusBadRequest)
+			return
+		}
+		if result.Error != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		novel.Authors[i] = &authorFounded
+	}
+
+	for i, genre := range novel.Genres {
+		var genreFounded models.Genre
+
+		result := database.DB.First(&genreFounded, genre.Id)
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			http.Error(w, "Record Not Found", http.StatusBadRequest)
+			return
+		}
+		if result.Error != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		novel.Genres[i] = &genreFounded
+	}
+
 	database.DB.Create(&novel)
 	json.NewEncoder(w).Encode(novel)
 }
