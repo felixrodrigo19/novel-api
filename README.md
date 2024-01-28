@@ -52,9 +52,11 @@ go run .\main.go
   ```
 - **Author**: `/author`
   **body**
+  ```bash
   {
     "Name": "Author Name"
   }
+  ```
 - **Novel**: `/novel`
   **body**
   ```bash
