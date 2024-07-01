@@ -10,7 +10,7 @@ The Novel Backend API is designed to facilitate the management and distribution 
 - **Author Management**: Enables CRUD operations for authors, providing a seamless way to manage author information.
 - **Genre Classification**: Supports genre classification for novels, allowing users to categorize novels based on their genres.
 - Novel: Supports description, relation with one or more genre and author, yiear of publication, language and others.
-- **Python**: The backend API is implemented using Golang.
+- **Language**: The backend API is implemented using Golang.
 - **Gorm**: Utilizes the Gorm ORM.
 - **gorilla/mux**: Utilizes mux to handle requests and routes.
 - **Database PostgreSQL**: Uses a relational database to store novel-related data, ensuring data consistency and integrity.
