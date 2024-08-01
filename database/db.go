@@ -1,7 +1,9 @@
 package database
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/felixrodrigo19/rest-api-go/models"
 	"gorm.io/driver/postgres"
@@ -13,8 +15,13 @@ var (
 	err error
 )
 
-func DBConection() {
-	dsn := "host=localhost user=postgres password=12345 dbname=Novels-API port=5432 sslmode=disable"
+func DBConnection() {
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	user := os.Getenv("POSTGRES_USER")
+	password := os.Getenv("POSTGRES_PASSWORD")
+	dbname := os.Getenv("POSTGRES_DB")
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", host, user, password, dbname, port)
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
@@ -23,5 +30,8 @@ func DBConection() {
 		log.Panic("DB connection error")
 	}
 
-	DB.AutoMigrate(&models.Author{}, &models.Genre{}, &models.Novel{})
+	err := DB.AutoMigrate(&models.Author{}, &models.Genre{}, &models.Novel{})
+	if err != nil {
+		log.Panic("DB migration error")
+	}
 }
