@@ -7,7 +7,7 @@ services:
       - ./.env
     ports:
       - '5432:5432'
-    network_mode: host
+
   app:
     build:
       context: .
@@ -21,4 +21,3 @@ services:
       - db
     env_file:
       - ./.env
-    network_mode: host
