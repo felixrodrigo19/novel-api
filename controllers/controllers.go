@@ -14,13 +14,20 @@ import (
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Home")
+	message, err := fmt.Fprint(w, "Home")
+	if err != nil {
+		return
+	}
+	fmt.Print(message)
 }
 
 func AllNovels(w http.ResponseWriter, r *http.Request) {
 	var novels []models.Novel
 	database.DB.Find(&novels)
-	json.NewEncoder(w).Encode(novels)
+	err := json.NewEncoder(w).Encode(novels)
+	if err != nil {
+		return
+	}
 }
 
 func Novel(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +47,10 @@ func Novel(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error fetching novel", http.StatusInternalServerError)
 		return
 	}
-	json.NewEncoder(w).Encode(&novel)
+	errEnc := json.NewEncoder(w).Encode(&novel)
+	if errEnc != nil {
+		return
+	}
 }
 
 func CreateNewNovel(w http.ResponseWriter, r *http.Request) {
@@ -85,13 +95,19 @@ func CreateNewNovel(w http.ResponseWriter, r *http.Request) {
 	}
 
 	database.DB.Create(&novel)
-	json.NewEncoder(w).Encode(novel)
+	ErrEnc := json.NewEncoder(w).Encode(novel)
+	if ErrEnc != nil {
+		return
+	}
 }
 
 func AllAuthors(w http.ResponseWriter, r *http.Request) {
 	var authors []models.Author
 	database.DB.Find(&authors)
-	json.NewEncoder(w).Encode(authors)
+	err := json.NewEncoder(w).Encode(authors)
+	if err != nil {
+		return
+	}
 }
 
 func Author(w http.ResponseWriter, r *http.Request) {
@@ -111,7 +127,10 @@ func Author(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error fetching author", http.StatusInternalServerError)
 		return
 	}
-	json.NewEncoder(w).Encode(&author)
+	errEnc := json.NewEncoder(w).Encode(&author)
+	if errEnc != nil {
+		return
+	}
 }
 
 func CreateNewAuthor(w http.ResponseWriter, r *http.Request) {
@@ -122,13 +141,19 @@ func CreateNewAuthor(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	database.DB.Create(&author)
-	json.NewEncoder(w).Encode(author)
+	errEnc := json.NewEncoder(w).Encode(author)
+	if errEnc != nil {
+		return
+	}
 }
 
 func AllGenres(w http.ResponseWriter, r *http.Request) {
 	var genres []models.Genre
 	database.DB.Find(&genres)
-	json.NewEncoder(w).Encode(genres)
+	err := json.NewEncoder(w).Encode(genres)
+	if err != nil {
+		return
+	}
 }
 
 func Genre(w http.ResponseWriter, r *http.Request) {
@@ -146,7 +171,10 @@ func Genre(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error fetching genre", http.StatusInternalServerError)
 		return
 	}
-	json.NewEncoder(w).Encode(genre)
+	errEnc := json.NewEncoder(w).Encode(genre)
+	if errEnc != nil {
+		return
+	}
 }
 
 func CreateNewGenre(w http.ResponseWriter, r *http.Request) {
@@ -157,5 +185,8 @@ func CreateNewGenre(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	database.DB.Create(&genre)
-	json.NewEncoder(w).Encode(genre)
+	errEnc := json.NewEncoder(w).Encode(genre)
+	if errEnc != nil {
+		return
+	}
 }
