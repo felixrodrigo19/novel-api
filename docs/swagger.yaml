@@ -1,0 +1,343 @@
+basePath: /
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Author:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        description: ID of the author
+        type: integer
+      name:
+        description: Name of the author
+        type: string
+      novels:
+        description: Novels associated with the author
+        items:
+          $ref: '#/definitions/models.Novel'
+        type: array
+      updatedAt:
+        type: string
+    type: object
+  models.Genre:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        description: ID of the genre
+        type: integer
+      name:
+        description: Name of the genre
+        type: string
+      novels:
+        description: Novels associated with the genre
+        items:
+          $ref: '#/definitions/models.Novel'
+        type: array
+      updatedAt:
+        type: string
+    type: object
+  models.Novel:
+    properties:
+      authors:
+        description: Authors associated with the novel
+        items:
+          $ref: '#/definitions/models.Author'
+        type: array
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        description: Description of the novel
+        type: string
+      genres:
+        description: Genres associated with the novel
+        items:
+          $ref: '#/definitions/models.Genre'
+        type: array
+      id:
+        description: ID of the novel
+        type: integer
+      language:
+        description: Language of the novel
+        type: string
+      title:
+        description: Title of the novel
+        type: string
+      type:
+        description: Type of the novel
+        type: string
+      updatedAt:
+        type: string
+      year:
+        description: Year of publication
+        type: integer
+    type: object
+host: http://localhost:8000
+info:
+  contact: {}
+  description: The Novel Backend API is designed to facilitate the management and
+    distribution of novel data.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Novel API Documentation
+  version: 2.0.0
+paths:
+  /:
+    get:
+      description: Prints the home message
+      operationId: home
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Home
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Home
+  /author:
+    get:
+      description: Lists all authors registered in the database
+      operationId: all-authors
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of authors
+          schema:
+            items:
+              $ref: '#/definitions/models.Author'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: List all authors
+    post:
+      consumes:
+      - application/json
+      description: Creates a new author in the database
+      operationId: create-author
+      parameters:
+      - description: Author data
+        in: body
+        name: author
+        required: true
+        schema:
+          $ref: '#/definitions/models.Author'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created author
+          schema:
+            $ref: '#/definitions/models.Author'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Create a new author
+  /author/{id}:
+    get:
+      description: Gets a specific author by their ID
+      operationId: get-author
+      parameters:
+      - description: Author ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Details of the author
+          schema:
+            $ref: '#/definitions/models.Author'
+        "400":
+          description: Invalid author ID
+          schema:
+            type: string
+        "404":
+          description: Author not found
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Get an author
+  /genre:
+    get:
+      description: Lists all genres registered in the database
+      operationId: all-genres
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of genres
+          schema:
+            items:
+              $ref: '#/definitions/models.Genre'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: List all genres
+    post:
+      consumes:
+      - application/json
+      description: Creates a new genre in the database
+      operationId: create-genre
+      parameters:
+      - description: Genre data
+        in: body
+        name: genre
+        required: true
+        schema:
+          $ref: '#/definitions/models.Genre'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created genre
+          schema:
+            $ref: '#/definitions/models.Genre'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Create a new genre
+  /genre/{id}:
+    get:
+      description: Gets a specific genre by its ID
+      operationId: get-genre
+      parameters:
+      - description: Genre ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Details of the genre
+          schema:
+            $ref: '#/definitions/models.Genre'
+        "400":
+          description: Invalid genre ID
+          schema:
+            type: string
+        "404":
+          description: Genre not found
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Get a genre
+  /novel:
+    get:
+      description: Lists all novels registered in the database
+      operationId: all-novels
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of novels
+          schema:
+            items:
+              $ref: '#/definitions/models.Novel'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: List all novels
+    post:
+      consumes:
+      - application/json
+      description: Creates a new novel in the database
+      operationId: create-novel
+      parameters:
+      - description: Novel data
+        in: body
+        name: novel
+        required: true
+        schema:
+          $ref: '#/definitions/models.Novel'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created novel
+          schema:
+            $ref: '#/definitions/models.Novel'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Create a new novel
+  /novel/{id}:
+    get:
+      description: Gets a specific novel by its ID
+      operationId: get-novel
+      parameters:
+      - description: Novel ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Details of the novel
+          schema:
+            $ref: '#/definitions/models.Novel'
+        "400":
+          description: Invalid novel ID
+          schema:
+            type: string
+        "404":
+          description: Novel not found
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Get a novel
+swagger: "2.0"

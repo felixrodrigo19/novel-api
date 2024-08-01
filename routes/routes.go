@@ -1,6 +1,7 @@
 package routes
 
 import (
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
 
@@ -10,6 +11,9 @@ import (
 
 func HandlerRequest() {
 	r := mux.NewRouter()
+
+	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+
 	r.HandleFunc("/", controllers.Home).Methods("GET")
 
 	r.HandleFunc("/novel", controllers.AllNovels).Methods("GET")

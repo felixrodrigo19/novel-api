@@ -4,7 +4,7 @@ LABEL authors="Rodrigo dos Santos Felix"
 
 WORKDIR /app
 
-COPY . /app/
+COPY . .
 
 RUN go mod download
 
