@@ -4,13 +4,8 @@ LABEL authors="Rodrigo dos Santos Felix"
 
 WORKDIR /app
 
-COPY . .
+COPY . /app/
 
 RUN go mod download
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /novel-api
-
-EXPOSE 8000
-
-CMD ["/novel-api"]
-
